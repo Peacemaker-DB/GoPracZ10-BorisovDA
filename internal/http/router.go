@@ -2,6 +2,7 @@ package router
 
 import (
 	"net/http"
+	"time"
 
 	"example.com/goprac10-borisovda/internal/core"
 	"example.com/goprac10-borisovda/internal/http/middleware"
@@ -15,8 +16,8 @@ func Build(cfg config.Config) http.Handler {
 	r := chi.NewRouter()
 
 	userRepo := repo.NewUserMem()
-	jwtv := jwt.NewHS256(cfg.JWTSecret, cfg.JWTTTL)
-	svc := core.NewService(userRepo, jwtv)
+	jwtv := jwt.NewRS256(15 * time.Minute)
+	svc := core.NewService(userRepo, jwtv, cfg)
 
 	r.Post("/api/v1/login", svc.LoginHandler)
 
@@ -34,6 +35,6 @@ func Build(cfg config.Config) http.Handler {
 	})
 
 	r.Post("/api/v1/refresh", svc.RefreshHandler)
-
+	r.With(middleware.RateLimitLogin).Post("/api/v1/login", svc.LoginHandler)
 	return r
 }

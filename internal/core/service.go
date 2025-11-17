@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"example.com/goprac10-borisovda/internal/http/middleware"
+	"example.com/goprac10-borisovda/internal/platform/config"
 	"example.com/goprac10-borisovda/internal/platform/jwt"
 	"github.com/go-chi/chi/v5"
 )
@@ -29,15 +30,14 @@ type Service struct {
 	repo      userRepo
 	jwt       jwtSigner
 	refresh   *jwt.RefreshManager
-	blacklist map[string]int64 // refresh → exp
+	blacklist map[string]int64
 }
 
-func NewService(r userRepo, j jwtSigner) *Service {
-	refreshTTL := 7 * 24 * time.Hour
+func NewService(r userRepo, j jwtSigner, cfg config.Config) *Service {
 	return &Service{
 		repo:      r,
 		jwt:       j,
-		refresh:   jwt.NewRefresh(j.(*jwt.HS256).Secret(), refreshTTL),
+		refresh:   jwt.NewRefresh(cfg.RefreshSecret, cfg.RefreshTTL),
 		blacklist: make(map[string]int64),
 	}
 }
@@ -74,7 +74,6 @@ func (s *Service) LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Service) MeHandler(w http.ResponseWriter, r *http.Request) {
-	// клеймы положим в контекст в AuthN-мидлваре
 	claims := r.Context().Value(middleware.CtxClaimsKey).(map[string]any)
 	jsonOK(w, map[string]any{
 		"id": claims["sub"], "email": claims["email"], "role": claims["role"],
@@ -85,7 +84,6 @@ func (s *Service) AdminStats(w http.ResponseWriter, r *http.Request) {
 	jsonOK(w, map[string]any{"users": 2, "version": "1.0"})
 }
 
-// утилиты и ключ для контекста — экспортируем из middleware
 type ctxClaims struct{}
 
 func jsonOK(w http.ResponseWriter, v any) {
@@ -95,7 +93,11 @@ func jsonOK(w http.ResponseWriter, v any) {
 func httpError(w http.ResponseWriter, code int, msg string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(code)
-	_ = json.NewEncoder(w).Encode(map[string]string{"error": msg})
+	_ = json.NewEncoder(w).Encode(map[string]any{
+		"error":   msg,
+		"code":    code,
+		"details": "",
+	})
 }
 
 func (s *Service) RefreshHandler(w http.ResponseWriter, r *http.Request) {
@@ -105,7 +107,6 @@ func (s *Service) RefreshHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Проверяем blacklist
 	if exp, ok := s.blacklist[in.Refresh]; ok && exp > time.Now().Unix() {
 		httpError(w, 401, "revoked_refresh")
 		return
@@ -119,10 +120,8 @@ func (s *Service) RefreshHandler(w http.ResponseWriter, r *http.Request) {
 
 	userID := int64(claims["sub"].(float64))
 
-	// Кладём старый refresh в blacklist
 	s.blacklist[in.Refresh] = int64(claims["exp"].(float64))
 
-	// Создаём новую пару токенов
 	access, _ := s.jwt.Sign(userID, "placeholder@example.com", "user")
 	refresh, _ := s.refresh.Sign(userID)
 
