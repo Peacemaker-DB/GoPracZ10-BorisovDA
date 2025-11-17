@@ -98,6 +98,8 @@
   $env:JWT_SECRET="dev-secret"; 
   $env:JWT_TTL="15min"; 
   $env:APP_PORT="8080";
+  go run keygen.go
+  go run ./cmd/server
   
   Для проверки работоспособности был запущен сервер, посел в Postman были проверено:
 
