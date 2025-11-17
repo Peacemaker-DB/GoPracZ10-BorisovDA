@@ -103,21 +103,44 @@
 
   Логин админом
 
-<img width="686" height="432" alt="image" src="https://github.com/user-attachments/assets/014bdbe7-ab65-4041-9e90-17568eefe6ae" />
+<img width="848" height="659" alt="image" src="https://github.com/user-attachments/assets/fc6a6353-38b1-439e-8aa6-e71cdf167643" />
 
   Доступ к защищённым ручкам 
 
-<img width="690" height="402" alt="image" src="https://github.com/user-attachments/assets/796347de-f751-4e41-a5b2-5825bbde6b01" />
+<img width="848" height="659" alt="image" src="https://github.com/user-attachments/assets/aa560edd-2f1f-44a8-a7b4-0cefcbd6e110" />
 
-  Логин админом пользователем
+  Запрос данных статистики
 
-<img width="687" height="382" alt="image" src="https://github.com/user-attachments/assets/16859b18-6935-43b0-924d-45ccc2fedf4d" />
+<img width="649" height="615" alt="image" src="https://github.com/user-attachments/assets/ef24807e-c2db-4cc7-991a-01bb420b9e34" />
+
+  Вход за пользователя
+
+<img width="831" height="457" alt="image" src="https://github.com/user-attachments/assets/25268f93-e333-437a-8ab0-e7bf8398a137" />
 
   Доступ к защищённым ручкам
 
-<img width="687" height="337" alt="image" src="https://github.com/user-attachments/assets/ff7c39f3-ecfd-42a7-9ac1-4ca4deede77f" />
+<img width="709" height="575" alt="image" src="https://github.com/user-attachments/assets/12d5a473-ef39-40cb-8ff6-3e76311939bf" />
 
-Данные пользователя в БД
+  правило ABAC
 
-<img width="1098" height="135" alt="image" src="https://github.com/user-attachments/assets/d9b4941a-4863-4db8-8211-18ceb7dd99d9" />
+  Удачная попытка
+
+<img width="710" height="619" alt="image" src="https://github.com/user-attachments/assets/028dca3b-69c7-42e3-b5a9-f561d26b7f37" />
+
+  Не удачная попытка
+
+<img width="702" height="638" alt="image" src="https://github.com/user-attachments/assets/4b56dd02-4323-4355-bedb-9a58cc6daac7" />
+
+  Refresh-flow
+
+  <img width="833" height="668" alt="image" src="https://github.com/user-attachments/assets/0e047b57-d4e4-4727-a5e7-a23860a5b22a" />
+
+
+    Простейший rate limit 
+
+  <img width="749" height="344" alt="image" src="https://github.com/user-attachments/assets/45dadfb5-51f4-4577-9cd3-9f63d7cdebc1" />
+
+  Единый формат ошибок
+
+  <img width="724" height="161" alt="image" src="https://github.com/user-attachments/assets/481fd889-7862-4ce0-b8eb-41f90982d0dc" />
 
