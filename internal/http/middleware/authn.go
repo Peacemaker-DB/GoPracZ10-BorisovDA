@@ -10,7 +10,7 @@ import (
 
 type ctxKey int
 
-const ctxClaimsKey ctxKey = iota
+const CtxClaimsKey ctxKey = iota
 
 func AuthN(v jwt.Validator) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
@@ -26,7 +26,7 @@ func AuthN(v jwt.Validator) func(http.Handler) http.Handler {
 				http.Error(w, "unauthorized", http.StatusUnauthorized)
 				return
 			}
-			ctx := context.WithValue(r.Context(), ctxClaimsKey, map[string]any(claims))
+			ctx := context.WithValue(r.Context(), CtxClaimsKey, map[string]any(claims))
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}

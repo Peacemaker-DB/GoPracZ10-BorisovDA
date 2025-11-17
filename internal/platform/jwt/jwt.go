@@ -46,3 +46,7 @@ func (h *HS256) Parse(tokenStr string) (jwt.MapClaims, error) {
 	}
 	return t.Claims.(jwt.MapClaims), nil
 }
+
+func (h *HS256) Secret() []byte {
+	return h.secret
+}

@@ -24,6 +24,7 @@ func Build(cfg config.Config) http.Handler {
 		priv.Use(middleware.AuthN(jwtv))
 		priv.Use(middleware.AuthZRoles("admin", "user"))
 		priv.Get("/api/v1/me", svc.MeHandler)
+		priv.Get("/api/v1/users/{id}", svc.UserByID)
 	})
 
 	r.Group(func(admin chi.Router) {
@@ -31,6 +32,8 @@ func Build(cfg config.Config) http.Handler {
 		admin.Use(middleware.AuthZRoles("admin"))
 		admin.Get("/api/v1/admin/stats", svc.AdminStats)
 	})
+
+	r.Post("/api/v1/refresh", svc.RefreshHandler)
 
 	return r
 }
